@@ -14,6 +14,7 @@
 " Basics {
 set nocompatible        " Must be first line
 set shell=/bin/sh
+"call system("mkdir -p $HOME/.vim/{backup,bundle,plugin,swap,undo}")
 " }
 " }
 
@@ -88,14 +89,7 @@ map <silent> <F11> :call Fullscreen()<CR>
 set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
 
-"    set cursorline                  " Highlight current line
-
 highlight clear SignColumn      " SignColumn should match background for
-" things like vim-gitgutter
-
-"    highlight clear LineNr          " Current line number row will have same background color in relative mode.
-" Things like vim-gitgutter will match LineNr highlight
-"highlight clear CursorLineNr    " Remove highlight color from current line number
 
 if has('cmdline_info')
     set ruler                   " Show the ruler
@@ -106,7 +100,8 @@ endif
 set autoread
 set backspace=indent,eol,start  " Backspace for dummies
 set linespace=0                 " No extra spaces between rows
-set number                      " Line numbers on
+"set number                      " Line numbers on
+set relativenumber
 set showmatch                   " Show matching brackets/parenthesis
 set incsearch                   " Find as you type search
 set hlsearch                    " Highlight search terms
@@ -136,24 +131,13 @@ set splitright                  " Puts new vsplit windows to the right of the cu
 set splitbelow                  " Puts new split windows to the bottom of the current
 "set matchpairs+=<:>             " Match, to be used with %
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+
 "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
+
 " Remove trailing whitespaces and ^M chars
-" To disable the stripping of whitespace, add the following to your
-" .vimrc.before.local file:
-autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
+autocmd FileType c,cpp,java,go,php,javascript,python,twig,jrxml,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
-autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
-" preceding line best in a plugin but here for now.
 
-autocmd BufNewFile,BufRead *.coffee set filetype=coffee
-
-" Workaround vim-commentary for Haskell
-autocmd FileType haskell setlocal commentstring=--\ %s
-" Workaround broken colour highlighting in Haskell
-"    autocmd FileType haskell setlocal nospell
-
-" }
 
 " Key (re)Mappings {
 
@@ -166,6 +150,7 @@ let g:mapleader=","
 
 noremap <leader>ve :edit ~/.vimrc<CR> " Quickly edit .vimrc
 nmap <leader>fm :call CursorPosition("normal gg=G")<CR>
+
 nnoremap <leader>n :call NumberToggle()<CR>
 nnoremap <leader>d :bdelete<CR>
 
@@ -240,13 +225,6 @@ vnoremap > >gv
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
 
-" Fix home and end keybindings for screen, particularly on mac
-" - for some reason this fixes the arrow keys too. huh.
-map [F $
-imap [F $
-map [H g0
-imap [H g0
-
 " For when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
 
@@ -273,35 +251,25 @@ map zh zH
 
 
 " Plugins {
-autocmd BufNewFile,BufRead *.gradle set filetype=groovy
-autocmd BufNewFile,BufRead *.ddl set filetype=sql
-autocmd BufNewFile,BufRead psql* set filetype=sql
 
 " PDF {
   autocmd BufReadPre *.pdf set ro nowrap
   autocmd BufReadPost *.pdf silent %!pdftotext "%" -nopgbrk -layout -q -eol unix - 
-  "autocmd BufWritePost *.pdf silent !rm -rf ~/PDF/%
-  "autocmd BufWritePost *.pdf silent !lp -s -d pdffg "%" 
-  "autocmd BufWritePost *.pdf silent !until "[ -e ~/PDF/% ]; do sleep 1; done"
-  "autocmd BufWritePost *.pdf silent !mv ~/PDF/% %:p:h
-  "command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 " }
 
 
-" PIV {
-let g:DisableAutoPHPFolding = 0
-let g:PIVAutoClose = 0
-" }
 
 " Misc {
-let g:NERDShutUp=1
 let b:match_ignorecase = 1
+autocmd BufNewFile,BufRead *.gradle set filetype=groovy
+autocmd BufNewFile,BufRead *.ddl set filetype=sql
+autocmd BufNewFile,BufRead psql* set filetype=sql
+
 " }
 
 " Syntastic {
 let g:syntastic_disabled_filetypes = ['html', 'js']
 
-"let g:syntastic_mode_map = {'mode': 'passive','active_filetypes':['c', 'cpp', 'perl', 'python','java', 'groovy', 'scala']}
 let g:syntastic_mode_map = {'mode': 'passive'}
 
 let g:syntastic_enable_signs = 1    " Put errors on left side
@@ -384,6 +352,7 @@ map <leader>e :NERDTreeFind<CR>
 nmap <leader>nt :NERDTreeFind<CR>
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+let g:NERDShutUp=1
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.vim$', '\.\~','\~$', '\.pyc$','\.pyc', '\.swo$', '\.swp$', '\.hg', '\.bzr', '\.svn', '\.git', '\.class', '\.dcu', '\.obj', 'build$[[dir]]']
 let NERDTreeChDirMode=2
@@ -392,7 +361,6 @@ let NERDTreeMouseMode=2
 let NERDTreeShowHidden=0
 let NERDTreeWinSize=80
 let NERDTreeKeepTreeInNewTab=1
-let g:nerdtree_tabs_open_on_gui_startup=0
 " }
 
 " Tabularize {
@@ -422,15 +390,12 @@ nmap <leader>ss :SessionSave<CR>
 nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
 " }
 
-" PyMode {
-let g:pymode_lint_checker = "pyflakes"
-let g:pymode_utils_whitespaces = 0
-let g:pymode_options = 0
-" }
-
 " CtrlP {
 let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'ra'
+
+nnoremap <silent> <C-n> :CtrlP<CR>
+
 nnoremap <silent> <leader>f :CtrlP<CR>
 nnoremap <silent> <leader>m :CtrlPMRU<CR>
 nnoremap <silent> <leader>b :CtrlPBuffer<CR>
@@ -468,13 +433,6 @@ let g:tagbar_type_go = {
             \ 'ctagsargs' : '-sort -silent'
             \ }
 "}
-
-" PythonMode {
-" Disable if python support not present
-if !has('python')
-    let g:pymode = 1
-endif
-" }
 
 " Fugitive {
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -551,13 +509,6 @@ autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
-" Haskell post write lint and check with ghcmod
-" $ `cabal install ghcmod` if missing and ensure
-" ~/.cabal/bin is in your $PATH.
-if !executable("ghcmod")
-    autocmd BufWritePost *.hs GhcModCheckAndLintAsync
-endif
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -706,7 +657,7 @@ augroup AutoSyntastic
 augroup END
 
 function! s:syntastic()
-    SyntasticCheck
+    "SyntasticCheck
     call lightline#update()
 endfunction
 " }
@@ -774,6 +725,7 @@ function! InitializeDirectories()
         endif
     endfor
 endfunction
+
 call InitializeDirectories()
 " }
 
@@ -828,12 +780,6 @@ command! -complete=file -nargs=+ Shell call s:RunShellCommand(<q-args>)
 " e.g. Grep current file for <search_term>: Shell grep -Hn <search_term> %
 " }
 
-function! Fullscreen()
-    "call system("wmctrl -r :ACTIVE: -b toggle,fullscreen")
-
-    call system("wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz")
-endfunction
-
 function! CursorPosition(command)
     " Preparation: save last search, and cursor position.
     let _s=@/
@@ -853,6 +799,10 @@ function! NumberToggle()
     else
         set relativenumber
     endif
+endfunction
+
+function! Fullscreen()
+    call system("wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz")
 endfunction
 
 
