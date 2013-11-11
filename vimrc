@@ -426,7 +426,7 @@ endif
 nnoremap <space>/ :Unite grep:.<cr>
 nnoremap <space>y :Unite history/yank<cr>
 nnoremap <leader>f :Unite -buffer-name=files buffer file_mru file_rec/async<cr>
-nmap <buffer> <ESC> <Plug>(unite_exit)
+"nmap <buffer> <ESC> <Plug>(unite_exit)
 
 let g:unite_enable_start_insert = 1
 let g:unite_source_history_yank_enable = 1
@@ -440,7 +440,8 @@ let g:unite_data_directory='~/.vim/.cache/unite'
 call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
       \ 'ignore_pattern', join([
       \ '\.git/',
-      \ 'git5/.*/review/',
+      \ '\.gradle/',
+      \ '\.idea/',
       \ 'build/',
       \ ], '\|'))
 
@@ -460,7 +461,7 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " Use the rank sorter for everything
 call unite#filters#sorter_default#use(['sorter_rank'])
 
-"autocmd FileType unite call s:unite_settings()
+autocmd FileType unite call s:unite_settings()
 
 function! s:unite_settings()
 "  let b:SuperTabDisabled=1
@@ -471,7 +472,7 @@ function! s:unite_settings()
 "  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
 "  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
 
-"  nmap <buffer> <ESC> <Plug>(unite_exit)
+  nmap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 " }
 
