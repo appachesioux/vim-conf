@@ -100,8 +100,8 @@ endif
 set autoread
 set backspace=indent,eol,start  " Backspace for dummies
 set linespace=0                 " No extra spaces between rows
-"set number                      " Line numbers on
-set relativenumber
+set number                      " Line numbers on
+"set relativenumber
 set showmatch                   " Show matching brackets/parenthesis
 set incsearch                   " Find as you type search
 set hlsearch                    " Highlight search terms
@@ -109,13 +109,14 @@ set winminheight=0              " Windows can be 0 line high
 set ignorecase                  " Case insensitive search
 set smartcase                   " Case sensitive when uc present
 set wildmenu                    " Show list instead of just completing
-set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
 set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
 set scrolljump=5                " Lines to scroll when cursor leaves screen
 set scrolloff=3                 " Minimum lines to keep above and below cursor
 set foldenable                  " Auto fold code
 set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildmode=list:full,longest  " Command <Tab> completion, list matches, then longest common part, then all.
 
 " }
 
@@ -141,10 +142,6 @@ autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
 
 " Key (re)Mappings {
 
-" The default leader is '\', but many people prefer ',' as it's in a standard
-" location. To override this behavior and set it back to '\' (or any other
-" character) add the following to your .vimrc.before.local file:
-"   let mapleader = '\'
 let mapleader = "," 
 let g:mapleader=","
 
@@ -187,7 +184,13 @@ endif
 
 cmap Tabe tabe
 
-" Yank from the cursor to the end of the line, to be consistent with C and D.
+" Yank(copy) to system clipboard
+" copy and paste
+vmap <C-c> "+yi
+vmap <C-x> "+c
+vmap <C-v> c<ESC>"+p
+imap <C-v> <ESC>"+pa
+
 nnoremap Y y$
 
 " Code folding options
@@ -206,7 +209,7 @@ nmap <leader>f9 :set foldlevel=9<CR>
 " search results. To clear search highlighting rather than toggle it on
 " and off, add the following to your .vimrc.before.local file:
 nmap <silent> <leader>/ :nohlsearch<CR>
-"        nmap <silent> <leader>/ :set invhlsearch<CR>
+"nmap <silent> <leader>/ :set invhlsearch<CR>
 
 
 " Find merge conflict markers
@@ -247,14 +250,15 @@ nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<C
 map zl zL
 map zh zH
 
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " }
 
 
 " Plugins {
 
 " PDF {
-  autocmd BufReadPre *.pdf set ro nowrap
-  autocmd BufReadPost *.pdf silent %!pdftotext "%" -nopgbrk -layout -q -eol unix - 
+autocmd BufReadPre *.pdf set ro nowrap
+autocmd BufReadPost *.pdf silent %!pdftotext "%" -nopgbrk -layout -q -eol unix - 
 " }
 
 
@@ -264,14 +268,11 @@ let b:match_ignorecase = 1
 autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 autocmd BufNewFile,BufRead *.ddl set filetype=sql
 autocmd BufNewFile,BufRead psql* set filetype=sql
-
 " }
 
 " Syntastic {
 let g:syntastic_disabled_filetypes = ['html', 'js']
-
 let g:syntastic_mode_map = {'mode': 'passive'}
-
 let g:syntastic_enable_signs = 1    " Put errors on left side
 let g:syntastic_enable_balloons = 1
 let g:syntastic_quiet_warnings = 1  " Only errors, not warnings please
@@ -283,8 +284,8 @@ let g:syntastic_echo_current_error=0
 "highlight SyntasticErrorSign guifg=red guibg=black
 highlight SyntasticErrorSign guifg=red
 
-"let g:syntastic_error_symbol = '✗'
-let g:syntastic_error_symbol = ''
+let g:syntastic_error_symbol = '✗'
+"let g:syntastic_error_symbol = ''
 "let g:syntastic_warning_symbol = ''
 
 let g:syntastic_style_error_symbol = ''
@@ -292,10 +293,18 @@ let g:syntastic_style_warning_symbol = ''
 
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_no_include_search = 1
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 
-"let g:syntastic_java_checkers = ['javac']
+let g:syntastic_java_checkers = ['javac']
+let g:syntastic_java_javac_autoload_maven_classpath = 0
 let g:syntastic_java_javac_config_file_enabled = 1
 let g:syntastic_java_javac_delete_output = 0
+let g:syntastic_java_javac_temp_dir = 'build/classes'
+let g:syntastic_java_javac_options = '-Xlint ' . ' -d ' . g:syntastic_java_javac_temp_dir
+
+map <leader>x :Errors<CR>
+map <leader>a :%!astyle --mode=c --style=ansi -s2 <CR><CR>
 
 " }
 
@@ -306,6 +315,11 @@ if has("autocmd") && exists("+omnifunc")
                 \if &omnifunc == "" |
                 \setlocal omnifunc=syntaxcomplete#Complete |
                 \endif
+
+
+
+
+
 endif
 
 hi Pmenu  guifg=#000000 guibg=#F8F8F8 ctermfg=black ctermbg=Lightgray
@@ -323,6 +337,24 @@ inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
 " Automatically open and close the popup menu / preview window
 "au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 "set completeopt=menu,preview,longest
+
+"---------------------------------------------------------------------
+let g:SuperTabDefaultCompletionType = "context"
+let g:clang_complete_copen = 1
+let g:clang_snippets = 1
+let g:clang_use_library = 1
+map <leader>a :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
+let OmniCpp_GlobalScopeSearch   = 1
+let OmniCpp_DisplayMode         = 1
+let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
+let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
+let OmniCpp_ShowAccess          = 1 "show access in pop-up
+let OmniCpp_SelectFirstItem     = 1 "select first item in pop-up
+set completeopt=menuone,menu,longest
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+"---------------------------------------------------------------------
+
 " }
 
 " Ctags {
@@ -390,49 +422,104 @@ nmap <leader>ss :SessionSave<CR>
 nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
 " }
 
+
+" BufferGator {
+let g:buffergator_suppress_keymaps = 1
+let g:buffergator_viewport_split_policy = "L"
+let g:buffergator_autodismiss_on_select = 1
+let g:buffergator_split_size = 80
+"let g:buffergator_vsplit_size = 80
+let g:buffergator_sort_regime = "basename"
+
+nnoremap <silent> <F3> :BuffergatorToggle<CR>
+nnoremap <silent> <leader>b :BuffergatorToggle<CR>
+" }
+
+
+" Unite {
+nnoremap <space>/ :Unite -quick-match grep:.<cr>
+nnoremap <space>y :Unite -quick-match history/yank<cr>
+nnoremap <leader>f :Unite -buffer-name=files buffer file_mru file_rec/async<cr>
+
+let g:unite_enable_start_insert = 1
+let g:unite_source_history_yank_enable = 1
+let g:unite_source_rec_max_cache_files=5000
+let g:unite_split_rule = "topleft"
+let g:unite_force_overwrite_statusline = 0
+let g:unite_winheight = 30
+let g:unite_data_directory='~/.vim/.cache/unite'
+"let g:unite_ignore_source_files = ['*.result', '*.class']
+
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/',
+      \ 'git5/.*/review/',
+      \ 'build/',
+      \ ], '\|'))
+
+"let g:unite_source_grep_default_opts = "-HnEi"
+"  \ . " --exclude='*.svn*'"
+"  \ . " --exclude='*.log*'"
+"  \ . " --exclude='*tmp*'"
+"  \ . " --exclude-dir='**/tmp'"
+"  \ . " --exclude-dir='CVS'"
+"  \ . " --exclude-dir='.svn'"
+"  \ . " --exclude-dir='.git'"
+"  \ . " --exclude-dir='build/*'"
+
+" Use the fuzzy matcher for everything
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+
+" Use the rank sorter for everything
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+
+autocmd FileType unite call s:unite_settings()
+
+function! s:unite_settings()
+  let b:SuperTabDisabled=1
+  "imap <buffer> <C-j> <NOP>
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  imap <silent><buffer><expr> <C-x> unite#do_action('split')
+  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+endfunction
+" }
+
+
 " CtrlP {
+"nnoremap <silent> <leader>f :CtrlP<CR>
+"nnoremap <silent> <leader>m :CtrlPMRU<CR>
+"nnoremap <silent> <leader>b :CtrlPBuffer<CR>
+
+let g:ctrlp_switch_buffer = 1
 let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_match_window = 'top,order:ttb,min:30,max:50,results:50'
+let g:ctrlp_use_caching = 0
 
-nnoremap <silent> <C-n> :CtrlP<CR>
-
-nnoremap <silent> <leader>f :CtrlP<CR>
-nnoremap <silent> <leader>m :CtrlPMRU<CR>
-nnoremap <silent> <leader>b :CtrlPBuffer<CR>
 let g:ctrlp_custom_ignore = {
             \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-            \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+            \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$|\.class$' }
 
-    let g:ctrlp_user_command = {
-                \ 'types': {
-                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': 'find %s -type f'
-                \ }
+let g:ctrlp_user_command = {
+            \ 'types': {
+            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+            \ },
+            \ 'fallback': 'find %s -type f'
+            \ }
+
 "}
 
 " TagBar {
 "nnoremap <silent> <leader>tt :TagbarToggle<CR>
 nnoremap <F4> :TagbarToggle<cr>
 inoremap <F4><ESC> :TagbarToggle<cr>
-
-
-" If using go please install the gotags program using the following
-" go install github.com/jstemmer/gotags
-" And make sure gotags is in your path
-let g:tagbar_type_go = {
-            \ 'ctagstype' : 'go',
-            \ 'kinds'     : [  'p:package', 'i:imports:1', 'c:constants', 'v:variables',
-            \ 't:types',  'n:interfaces', 'w:fields', 'e:embedded', 'm:methods',
-            \ 'r:constructor', 'f:functions' ],
-            \ 'sro' : '.',
-            \ 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype' },
-            \ 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' },
-            \ 'ctagsbin'  : 'gotags',
-            \ 'ctagsargs' : '-sort -silent'
-            \ }
-"}
 
 " Fugitive {
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -657,7 +744,7 @@ augroup AutoSyntastic
 augroup END
 
 function! s:syntastic()
-    "SyntasticCheck
+    SyntasticCheck
     call lightline#update()
 endfunction
 " }

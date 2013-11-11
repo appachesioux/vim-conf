@@ -1,32 +1,26 @@
 "--------------------------------------------------------------------------------------------------------------------------------
 " => Plugins
 "--------------------------------------------------------------------------------------------------------------------------------
-" Deps {
-let bundles = [["git", "https://github.com/flazz/vim-colorschemes", "$HOME/.vim/bundle/vim-colorschemes"]]
-"let bundles += [["git", "https://github.com/MarcWeber/vim-addon-mw-utils", "$HOME/.vim/bundle/vim-addon-mw-utils"]]
-"let bundles += [["git", "https://github.com/tomtom/tlib_vim", "$HOME/.vim/bundle/tlib_vim"]]
-" }
-
 " General {
+let bundles  = [["git", "https://github.com/flazz/vim-colorschemes", "$HOME/.vim/bundle/vim-colorschemes"]]
 let bundles += [["git", "https://github.com/itchyny/lightline.vim", "$HOME/.vim/bundle/lightline.vim"]]
 let bundles += [["git", "https://github.com/kien/ctrlp.vim", "$HOME/.vim/bundle/ctrlp.vim"]]
+let bundles += [["git", "https://github.com/Shougo/unite.vim", "$HOME/.vim/bundle/unite.vim"]]
+
+let bundles += [["git", "https://github.com/Shougo/vimproc.vim", "$HOME/.vim/bundle/vimproc.vim"]]
+
 let bundles += [["git", "https://github.com/scrooloose/nerdtree", "$HOME/.vim/bundle/nerdtree"]]
+let bundles += [["git", "https://github.com/jeetsukumaran/vim-buffergator", "$HOME/.vim/bundle/vim-buffergator"]]
 let bundles += [["git", "https://github.com/tpope/vim-surround", "$HOME/.vim/bundle/vim-surround"]]
 let bundles += [["git", "https://github.com/spf13/vim-autoclose", "$HOME/.vim/bundle/vim-autoclose"]]
 let bundles += [["git", "https://github.com/terryma/vim-multiple-cursors", "$HOME/.vim/bundle/vim-multiple-cursors"]]
-let bundles += [["git", "https://github.com/vim-scripts/sessionman.vim", "$HOME/.vim/bundle/sessionman.vim"]]
-"let bundles += [["git", "https://github.com/Lokaltog/vim-easymotion", "$HOME/.vim/bundle/vim-easymotion"]]
-"let bundles += [["git", "https://github.com/godlygeek/csapprox", "$HOME/.vim/bundle/csapprox"]]
 let bundles += [["git", "https://github.com/mbbill/undotree", "$HOME/.vim/bundle/undotree"]]
 let bundles += [["git", "https://github.com/nathanaelkane/vim-indent-guides", "$HOME/.vim/bundle/vim-indent-guides"]]
-"let bundles += [["git", "https://github.com/vim-scripts/restore_view.vim", "$HOME/.vim/bundle/restore_view"]]
-"let bundles += [["git", "https://github.com/tpope/vim-abolish", "$HOME/.vim/bundle/vim-abolish"]]
 " }
 
 " General Programming {
 let bundles += [["git", "https://github.com/scrooloose/syntastic", "$HOME/.vim/bundle/syntastic"]]
 let bundles += [["git", "https://github.com/tpope/vim-fugitive", "$HOME/.vim/bundle/vim-fugitive"]]
-let bundles += [["git", "https://github.com/airblade/vim-gitgutter", "$HOME/.vim/bundle/vim-gitgutter"]]
 let bundles += [["git", "https://github.com/mattn/webapi-vim", "$HOME/.vim/bundle/webapi-vim"]]
 let bundles += [["git", "https://github.com/mattn/gist-vim", "$HOME/.vim/bundle/gist-vim"]]
 let bundles += [["git", "https://github.com/scrooloose/nerdcommenter", "$HOME/.vim/bundle/nerdcommenter"]]
@@ -36,10 +30,8 @@ let bundles += [["git", "https://github.com/majutsushi/tagbar", "$HOME/.vim/bund
 
 " Snippets & AutoComplete {
 let bundles += [["git", "https://github.com/ervandew/supertab", "$HOME/.vim/bundle/supertab"]]
-"let bundles += [["git", "https://github.com/garbas/vim-snipmate", "$HOME/.vim/bundle/vim-snipmate"]]
 let bundles += [["git", "https://github.com/Shougo/neocomplete.vim", "$HOME/.vim/bundle/neocomplete.vim"]]
 let bundles += [["git", "https://github.com/Shougo/neosnippet", "$HOME/.vim/bundle/neosnippet"]]
-"let bundles += [["git", "https://github.com/honza/vim-snippets", "$HOME/.vim/bundle/vim-snippets"]]
 " }
 
 " Javascript {
@@ -70,18 +62,9 @@ let bundles += [["git", "https://github.com/tpope/vim-haml", "$HOME/.vim/bundle/
 " }
 
 " Misc {
-"let bundles += [["git", "https://github.com/tpope/vim-markdown", "$HOME/.vim/bundle/vim-markdown"]]
-"let bundles += [["git", "https://github.com/spf13/vim-preview", "$HOME/.vim/bundle/vim-preview"]]
-"let bundles += [["git", "https://github.com/tpope/vim-cucumber", "$HOME/.vim/bundle/vim-cucumber"]]
-"let bundles += [["git", "https://github.com/quentindecock/vim-cucumber-align-pipes", "$HOME/.vim/bundle/vim-cucumber-align-pipes"]]
-"let bundles += [["git", "https://github.com/vim-scripts/Puppet-Syntax-Highlighting", "$HOME/.vim/bundle/Puppet-Syntax-Highlighting"]]
 " }
 
 " SQL {
-"let bundles += [["git", "https://github.com/exu/pgsql.vim.git", "$HOME/.vim/bundle/pgsql.vim"]]
-"let bundles += [["git", "https://github.com/vim-scripts/sql.vim", "$HOME/.vim/bundle/sql.vim"]]
-"let bundles += [["git", "https://github.com/vim-scripts/SQLComplete.vim", "$HOME/.vim/bundle/SQLComplete.vim"]]
-"let bundles += [["git", "https://github.com/vim-scripts/dbext.vim", "$HOME/.vim/bundle/dbext.vim"]]
 let bundles += [["git", "https://github.com/ivalkeen/vim-simpledb", "$HOME/.vim/bundle/vim-simpledb"]]
 " }
 
