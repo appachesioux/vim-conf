@@ -2,7 +2,6 @@
 "   -> http://tpmusing.blogspot.com.br/2013/04/why-vim-syntastic-my-editor-has-had.html
 "   -> http://haridas.in/vim-as-your-ide.html
 "   -> http://www.drchip.org/astronaut/vim/index.html
-"   -> cscope - like project manager
 "   -> http://bling.github.io/blog/2013/06/02/unite-dot-vim-the-plugin-you-didnt-know-you-need/
 "   -> https://github.com/fisadev/fisa-vim-config
 "   -> http://www.8t8.us/vim/ - Kevin's Vim Tips and Tricks 

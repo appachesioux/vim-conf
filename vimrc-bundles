@@ -6,9 +6,7 @@ let bundles  = [["git", "https://github.com/flazz/vim-colorschemes", "$HOME/.vim
 let bundles += [["git", "https://github.com/itchyny/lightline.vim", "$HOME/.vim/bundle/lightline.vim"]]
 let bundles += [["git", "https://github.com/kien/ctrlp.vim", "$HOME/.vim/bundle/ctrlp.vim"]]
 let bundles += [["git", "https://github.com/Shougo/unite.vim", "$HOME/.vim/bundle/unite.vim"]]
-
 let bundles += [["git", "https://github.com/Shougo/vimproc.vim", "$HOME/.vim/bundle/vimproc.vim"]]
-
 let bundles += [["git", "https://github.com/scrooloose/nerdtree", "$HOME/.vim/bundle/nerdtree"]]
 let bundles += [["git", "https://github.com/jeetsukumaran/vim-buffergator", "$HOME/.vim/bundle/vim-buffergator"]]
 let bundles += [["git", "https://github.com/tpope/vim-surround", "$HOME/.vim/bundle/vim-surround"]]
