@@ -422,19 +422,6 @@ nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
 " }
 
 
-" BufferGator {
-let g:buffergator_suppress_keymaps = 1
-let g:buffergator_viewport_split_policy = "L"
-let g:buffergator_autodismiss_on_select = 1
-let g:buffergator_split_size = 80
-"let g:buffergator_vsplit_size = 80
-let g:buffergator_sort_regime = "basename"
-
-nnoremap <silent> <F3> :BuffergatorToggle<CR>
-nnoremap <silent> <leader>b :BuffergatorToggle<CR>
-" }
-
-
 " Unite {
 nnoremap <space>/ :Unite -quick-match grep:.<cr>
 nnoremap <space>y :Unite -quick-match history/yank<cr>
@@ -487,33 +474,6 @@ function! s:unite_settings()
   nmap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 " }
-
-
-" CtrlP {
-"nnoremap <silent> <leader>f :CtrlP<CR>
-"nnoremap <silent> <leader>m :CtrlPMRU<CR>
-"nnoremap <silent> <leader>b :CtrlPBuffer<CR>
-
-let g:ctrlp_switch_buffer = 1
-let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_match_window = 'top,order:ttb,min:30,max:50,results:50'
-let g:ctrlp_use_caching = 0
-
-let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-            \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$|\.class$' }
-
-let g:ctrlp_user_command = {
-            \ 'types': {
-            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-            \ },
-            \ 'fallback': 'find %s -type f'
-            \ }
-
-"}
 
 " TagBar {
 "nnoremap <silent> <leader>tt :TagbarToggle<CR>
@@ -600,6 +560,7 @@ autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 if !exists('g:neocomplete#sources#omni#input_patterns')
     let g:neocomplete#sources#omni#input_patterns = {}
 endif
+
 let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
@@ -746,13 +707,6 @@ function! s:syntastic()
     SyntasticCheck
     call lightline#update()
 endfunction
-" }
-
-
-
-" vim-gitgutter {
-" https://github.com/airblade/vim-gitgutter/issues/106
-let g:gitgutter_realtime = 0
 " }
 
 " }

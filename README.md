@@ -1,6 +1,6 @@
 vim-conf
 ========
 
-1 - Inspired by spf13
+1 - Vim Conf
 
 
