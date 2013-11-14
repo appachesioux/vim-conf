@@ -9,11 +9,14 @@
 "   vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " }
 
+" tips {
+" --> vimgrep /jrxml/gj ./**/*.java -> (:cw to view location list)
+" }
+
 " Environment {
 " Basics {
 set nocompatible        " Must be first line
 set shell=/bin/sh
-"call system("mkdir -p $HOME/.vim/{backup,bundle,plugin,swap,undo}")
 " }
 " }
 
@@ -114,8 +117,21 @@ set scrolloff=3                 " Minimum lines to keep above and below cursor
 set foldenable                  " Auto fold code
 set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildmode=list:full,longest  " Command <Tab> completion, list matches, then longest common part, then all.
+
+set wildignore+=*/tmp/*  "Tmp "
+set wildignore+=*.zip  " Compressed file" 
+set wildignore+=*.aux,*.out,*.toc "Latex Indermediate files"
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg "Binary Imgs"
+set wildignore+=*.so,*.o,*.obj,*.exe,*.dll,*.manifest,*.dcu,*.class "Compiled Object files"
+set wildignore+=*.spl "Compiled speolling world list"
+set wildignore+=*.sw? "Vim swap files"
+set wildignore+=*.DS_Store "OSX SHIT"
+set wildignore+=*.luac "Lua byte code"
+set wildignore+=*.pyc "Python Object codes"
+set wildignore+=*.orig "Merge resolution files"
+set wildignore+=.hg,.git,.svn " Version Controls"
+set wildignore+=.idea,.gradle,*/build/* " Project "
 
 " }
 
@@ -423,47 +439,48 @@ endif
 " }
 
 " Unite {
-nnoremap <space>/ :Unite -no-split grep:.<cr>
-nnoremap <space>y :Unite -no-split history/yank<cr>
-nnoremap <leader>f :Unite -no-split -buffer-name=files buffer file_mru file_rec/async:!<cr>
-
-let g:unite_enable_start_insert = 1
 let g:unite_source_history_yank_enable = 1
-let g:unite_source_rec_max_cache_files=5000
-let g:unite_split_rule = "topleft"
-let g:unite_force_overwrite_statusline = 0
-let g:unite_winheight = 40
-let g:unite_data_directory='~/.vim/.cache/unite'
-"let g:unite_ignore_source_files = ['*.result', '*.class']
+let g:unite_enable_start_insert = 1
+let g:unite_update_time = 200
+let g:unite_data_directory='~/.cache/unite'
 
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep', 'ignore_pattern',
-      \  join([
-      \ '\.git/',
-      \ '\.gradle/',
-      \ '\.idea/',
-      \ 'build/',
-      \ ], '\|')
-      \)
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+  let g:unite_source_grep_recursive_opt = ''
+  let g:unite_source_grep_max_candidates = 200
+endif
 
-  call unite#custom#source('buffer,file_rec/async,file_rec,file_mru', 'matchers',
-        \ ['converter_tail', 'matcher_default']
-        \)
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+           \ 'ignore_pattern',
+           \ escape(
+           \     substitute(join(split(&wildignore, ","), '\|'), '**/\?', '', 'g'),
+           \     '.'))
 
-  call unite#custom#source('file_rec/async,file_rec,file_mru', 'converters',
-        \ ['converter_file_directory']
-        \)
+" Mappings
+nnoremap <leader>f :Unite -no-split -buffer-name=files buffer file_mru file_rec/async:!<cr>
+nnoremap <Leader>t :<C-u>Unite -no-split -buffer-name=files   file<CR>
+nnoremap <Leader>r :<C-u>Unite -no-split -buffer-name=mru     file_mru<CR>
+nnoremap <Leader>o :<C-u>Unite -no-split -buffer-name=outline outline<CR>
+nnoremap <Leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<CR>
+nnoremap <Leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<CR>
+"nnoremap <Leader>d :<C-u>Unite -no-split -buffer-name=change-cwd -default-action=lcd directory_mru<CR>
+nnoremap <Leader>a :<C-u>Unite -no-split grep:.<CR>
+nnoremap <Leader>* :<C-u>UniteWithCursorWord -no-split grep:.<CR>
 
 
-" Use the fuzzy matcher for everything
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-
-" Use the rank sorter for everything
 call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#source('buffer,file_rec/async,file_rec,file_mru','matchers',['converter_tail', 'matcher_default'])
+call unite#custom#source('file_rec/async,file_rec,file_mru', 'converters',['converter_file_directory'])
 
 autocmd FileType unite call s:unite_settings()
-
 function! s:unite_settings()
+  imap <buffer> <C-j> <Plug>(unite_select_next_line)
+  imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+
   nmap <buffer> <ESC> <Plug>(unite_exit)
+  imap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 " }
 

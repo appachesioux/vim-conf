@@ -22,6 +22,7 @@ let bundles += [["git", "https://github.com/mattn/gist-vim", "$HOME/.vim/bundle/
 let bundles += [["git", "https://github.com/scrooloose/nerdcommenter", "$HOME/.vim/bundle/nerdcommenter"]]
 let bundles += [["git", "https://github.com/godlygeek/tabular", "$HOME/.vim/bundle/tabular"]]
 let bundles += [["git", "https://github.com/majutsushi/tagbar", "$HOME/.vim/bundle/tagbar"]]
+let bundles += [["git", "https://github.com/vim-scripts/EasyGrep", "$HOME/.vim/bundle/easygrep"]]
 " }
 
 " Snippets & AutoComplete {
