@@ -292,9 +292,9 @@ let g:syntastic_enable_signs = 1    " Put errors on left side
 let g:syntastic_enable_balloons = 1
 let g:syntastic_quiet_warnings = 1  " Only errors, not warnings please
 let g:syntastic_auto_loc_list = 2   " Only show errors when I ask
-let g:syntastic_auto_jump = 1
+"let g:syntastic_auto_jump = 1
 let g:syntastic_debug = 0
-let g:syntastic_echo_current_error=0
+let g:syntastic_echo_current_error = 0
 
 "highlight SyntasticErrorSign guifg=red guibg=black
 highlight SyntasticErrorSign guifg=red
@@ -331,10 +331,8 @@ if has("autocmd") && exists("+omnifunc")
                 \setlocal omnifunc=syntaxcomplete#Complete |
                 \endif
 
-
-
-
-
+  autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+  autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 endif
 
 hi Pmenu  guifg=#000000 guibg=#F8F8F8 ctermfg=black ctermbg=Lightgray
@@ -359,7 +357,6 @@ let g:clang_complete_copen = 1
 let g:clang_snippets = 1
 let g:clang_use_library = 1
 map <leader>a :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
-set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
 let OmniCpp_GlobalScopeSearch   = 1
 let OmniCpp_DisplayMode         = 1
 let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
@@ -368,6 +365,7 @@ let OmniCpp_ShowAccess          = 1 "show access in pop-up
 let OmniCpp_SelectFirstItem     = 1 "select first item in pop-up
 set completeopt=menuone,menu,longest
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
 "---------------------------------------------------------------------
 
 " }
