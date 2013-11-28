@@ -10,7 +10,12 @@
 " }
 
 " tips {
-" --> vimgrep /jrxml/gj ./**/*.java -> (:cw to view location list)
+" 1 - vimgrep /jrxml/gj ./**/*.java -> (:cw to view location list)
+" ------------------------------------------------------------------------------
+" 2 - unite
+" 2.1 - <space> -> select multiple files 
+" 2.2 - <enter> -> open file
+" ------------------------------------------------------------------------------
 " }
 
 " Environment {
@@ -265,7 +270,7 @@ nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<C
 map zl zL
 map zh zH
 
-vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+vnoremap <C-r> "hy:%s/<C-r>h/<C-r>h/gc<left><left><left>
 " }
 
 
@@ -279,6 +284,13 @@ autocmd BufReadPost *.pdf silent %!pdftotext "%" -nopgbrk -layout -q -eol unix -
 
 
 " Misc {
+command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
+
+let g:netrw_banner       = 0
+let g:netrw_keepdir      = 0
+let g:netrw_liststyle    = 1 " or 3
+let g:netrw_sort_options = 'i'
+
 let b:match_ignorecase = 1
 autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 autocmd BufNewFile,BufRead *.ddl set filetype=sql
@@ -286,25 +298,30 @@ autocmd BufNewFile,BufRead psql* set filetype=sql
 " }
 
 " Syntastic {
+if !filereadable(expand('~/.vim/bundle/syntastic/done'))
+   call system("sed '/if javac_classpath != / \a let javac_classpath = s:AddToClasspath(javac_classpath,g:syntastic_java_javac_temp_dir)' -i ~/.vim/bundle/syntastic/syntax_checkers/java/javac.vim")
+
+   silent !touch ~/.vim/bundle/syntastic/done
+endif
+
 let g:syntastic_disabled_filetypes = ['html', 'js']
-let g:syntastic_mode_map = {'mode': 'passive'}
-let g:syntastic_enable_signs = 1    " Put errors on left side
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [''], 'passive_filetypes': [''] }
+
+let g:syntastic_check_on_open = 0
+let g:syntastic_enable_signs = 1
 let g:syntastic_enable_balloons = 1
-let g:syntastic_quiet_warnings = 1  " Only errors, not warnings please
-let g:syntastic_auto_loc_list = 2   " Only show errors when I ask
-"let g:syntastic_auto_jump = 1
+let g:syntastic_quiet_warnings = 0
+let g:syntastic_auto_loc_list = 2
+
+let g:syntastic_auto_jump = 0
 let g:syntastic_debug = 0
 let g:syntastic_echo_current_error = 0
 
-"highlight SyntasticErrorSign guifg=red guibg=black
 highlight SyntasticErrorSign guifg=red
 
 let g:syntastic_error_symbol = '✗'
-"let g:syntastic_error_symbol = ''
-"let g:syntastic_warning_symbol = ''
-
-let g:syntastic_style_error_symbol = ''
-let g:syntastic_style_warning_symbol = ''
+let g:syntastic_warning_symbol = 'w'
+let g:syntastic_style_error_symbol = 's'
 
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_no_include_search = 1
@@ -318,7 +335,6 @@ let g:syntastic_java_javac_delete_output = 0
 let g:syntastic_java_javac_temp_dir = 'build/classes'
 let g:syntastic_java_javac_options = '-Xlint ' . ' -d ' . g:syntastic_java_javac_temp_dir
 
-map <leader>x :Errors<CR>
 map <leader>a :%!astyle --mode=c --style=ansi -s2 <CR><CR>
 
 " }
@@ -326,13 +342,15 @@ map <leader>a :%!astyle --mode=c --style=ansi -s2 <CR><CR>
 
 " OmniComplete {
 if has("autocmd") && exists("+omnifunc")
-    autocmd Filetype *
-                \if &omnifunc == "" |
-                \setlocal omnifunc=syntaxcomplete#Complete |
-                \endif
-
   autocmd Filetype java setlocal omnifunc=javacomplete#Complete
   autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
+
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
 endif
 
 hi Pmenu  guifg=#000000 guibg=#F8F8F8 ctermfg=black ctermbg=Lightgray
@@ -346,25 +364,23 @@ inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
 inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
-
-" Automatically open and close the popup menu / preview window
-"au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-"set completeopt=menu,preview,longest
+map <leader>a :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 "---------------------------------------------------------------------
 let g:SuperTabDefaultCompletionType = "context"
 let g:clang_complete_copen = 1
 let g:clang_snippets = 1
 let g:clang_use_library = 1
-map <leader>a :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+
 let OmniCpp_GlobalScopeSearch   = 1
 let OmniCpp_DisplayMode         = 1
 let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
 let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
 let OmniCpp_ShowAccess          = 1 "show access in pop-up
 let OmniCpp_SelectFirstItem     = 1 "select first item in pop-up
-set completeopt=menuone,menu,longest
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+
+set completeopt=menuone,menu,longest
 set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
 "---------------------------------------------------------------------
 
@@ -499,97 +515,6 @@ nnoremap <silent> <leader>gw :Gwrite<CR>:GitGutter<CR>
 nnoremap <silent> <leader>ge :Gedit<CR>
 nnoremap <silent> <leader>gg :GitGutterToggle<CR>
 "}
-
-" neocomplete {
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_auto_delimiter = 1
-let g:neocomplete#enable_auto_select = 0
-let g:neocomplete#max_list = 15
-let g:neocomplete#force_overwrite_completefunc = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" SuperTab like snippets behavior.
-imap <silent><expr><TAB> neosnippet#expandable() ?
-            \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
-            \ "\<C-e>" : "\<TAB>")
-smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-            \ 'default' : '',
-            \ 'vimshell' : $HOME.'/.vimshell_hist',
-            \ 'scheme' : $HOME.'/.gosh_completions'
-            \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings {
-" These two lines conflict with the default digraph mapping of <C-K>
-" If you prefer that functionality, add the following to your
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-
-inoremap <expr><C-g> neocomplete#undo_completion()
-inoremap <expr><C-l> neocomplete#complete_common_string()
-inoremap <expr><CR> neocomplete#complete_common_string()
-
-" <TAB>: completion.
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
-
-" <CR>: close popup
-" <s-CR>: close popup and save indent.
-inoremap <expr><s-CR> pumvisible() ? neocomplete#close_popup()"\<CR>" : "\<CR>"
-inoremap <expr><CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y> neocomplete#close_popup()
-" }
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-endif
-
-let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-
-" Use honza's snippets.
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
-
-" Enable neosnippet snipmate compatibility mode
-let g:neosnippet#enable_snipmate_compatibility = 1
-
-" For snippet_complete marker.
-if has('conceal')
-    "set conceallevel=2 concealcursor=i
-endif
-
-" Disable the neosnippet preview candidate window
-" When enabled, there can be too much visual noise
-" especially when splits are used.
-set completeopt-=preview
-" }
 
 " UndoTree {
 nnoremap <Leader>u :UndotreeToggle<CR>

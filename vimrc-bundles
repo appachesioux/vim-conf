@@ -27,7 +27,7 @@ let bundles += [["git", "https://github.com/vim-scripts/EasyGrep", "$HOME/.vim/b
 
 " Snippets & AutoComplete {
 let bundles += [["git", "https://github.com/ervandew/supertab", "$HOME/.vim/bundle/supertab"]]
-let bundles += [["git", "https://github.com/Shougo/neocomplete.vim", "$HOME/.vim/bundle/neocomplete.vim"]]
+"let bundles += [["git", "https://github.com/Shougo/neocomplete.vim", "$HOME/.vim/bundle/neocomplete.vim"]]
 "let bundles += [["git", "https://github.com/Shougo/neosnippet", "$HOME/.vim/bundle/neosnippet"]]
 " }
 
@@ -53,7 +53,7 @@ let bundles += [["git", "https://github.com/vim-scripts/javacomplete", "$HOME/.v
 " }
 
 " HTML {
-let bundles += [["git", "https://github.com/amirh/HTML-AutoCloseTag", "$HOME/.vim/bundle/HTML-AutoCloseTag"]]
+"let bundles += [["git", "https://github.com/amirh/HTML-AutoCloseTag", "$HOME/.vim/bundle/HTML-AutoCloseTag"]]
 let bundles += [["git", "https://github.com/hail2u/vim-css3-syntax", "$HOME/.vim/bundle/vim-css3-syntax"]]
 let bundles += [["git", "https://github.com/tpope/vim-haml", "$HOME/.vim/bundle/vim-haml"]]
 " }
