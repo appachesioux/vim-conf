@@ -5,6 +5,7 @@
 "   -> http://bling.github.io/blog/2013/06/02/unite-dot-vim-the-plugin-you-didnt-know-you-need/
 "   -> https://github.com/fisadev/fisa-vim-config
 "   -> http://www.8t8.us/vim/ - Kevin's Vim Tips and Tricks 
+"   -> pacman -S the_silver_searcher ( ag ) 
 "
 "   vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " }
@@ -422,6 +423,8 @@ let NERDTreeMouseMode=2
 let NERDTreeShowHidden=0
 let NERDTreeWinSize=80
 let NERDTreeKeepTreeInNewTab=1
+
+
 " }
 
 " Tabularize {
@@ -454,22 +457,29 @@ endif
 
 " Unite {
 let g:unite_source_history_yank_enable = 1
-let g:unite_enable_start_insert = 1
+let g:unite_enable_start_insert = 0
 let g:unite_update_time = 200
 let g:unite_data_directory='~/.cache/unite'
+let g:unite_source_file_rec_max_cache_files = 0
+let g:unite_source_file_mru_limit = 20
+let g:unite_enable_split_vertically = 1
 
+" Use ag for search
 if executable('ag')
   let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--nocolor --nogroup'
-  let g:unite_source_grep_recursive_opt = ''
-  let g:unite_source_grep_max_candidates = 200
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = '-r -i'
 endif
 
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-           \ 'ignore_pattern',
-           \ escape(
-           \     substitute(join(split(&wildignore, ","), '\|'), '**/\?', '', 'g'),
-           \     '.'))
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#source('buffer,file_rec/async,file_rec,file_mru','matchers',['converter_tail', 'matcher_default'])
+call unite#custom#source('file_rec/async,file_rec,file_mru', 'converters',['converter_file_directory'])
+
+call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate','max_candidates', 0)
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep','ignore_pattern', escape(substitute(join(split(&wildignore, ","), '\|'), '**/\?', '', 'g'),'.'))
+
+call unite#custom_default_action('file', 'tabopen')
 
 " Mappings
 nnoremap <leader>f :Unite -no-split -buffer-name=files buffer file_mru file_rec/async:!<cr>
@@ -482,11 +492,8 @@ nnoremap <Leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<CR>
 nnoremap <Leader>a :<C-u>Unite -no-split grep:.<CR>
 nnoremap <Leader>* :<C-u>UniteWithCursorWord -no-split grep:.<CR>
 
+nnoremap <C-l> :call ClearUniteMRU()<CR>
 
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#source('buffer,file_rec/async,file_rec,file_mru','matchers',['converter_tail', 'matcher_default'])
-call unite#custom#source('file_rec/async,file_rec,file_mru', 'converters',['converter_file_directory'])
 
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
@@ -497,6 +504,8 @@ function! s:unite_settings()
   imap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 " }
+
+" -------------------%<---------------------
 
 " TagBar {
 "nnoremap <silent> <leader>tt :TagbarToggle<CR>
@@ -777,6 +786,15 @@ function! Fullscreen()
     call system("wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz")
 endfunction
 
+function! ClearUniteMRU()
+    call system("rm -rf " . g:unite_data_directory . "/file_mru ")
+    call system("touch " . g:unite_data_directory . "/file_mru ")
+
+    call system("rm -rf " . g:unite_data_directory . "/directory_mru ")
+    call system("touch " . g:unite_data_directory . "/directory_mru ")
+
+    s:mru#validate()
+endfunction
 
 " }
 
