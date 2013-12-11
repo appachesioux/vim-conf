@@ -8,7 +8,7 @@ let bundles += [["git", "https://github.com/Shougo/unite.vim", "$HOME/.vim/bundl
 let bundles += [["git", "https://github.com/Shougo/vimproc.vim", "$HOME/.vim/bundle/vimproc.vim"]]
 
 let bundles += [["git", "https://github.com/scrooloose/nerdtree", "$HOME/.vim/bundle/nerdtree"]]
-let bundles += [["git", "https://github.com/jistr/vim-nerdtree-tabs", "$HOME/.vim/bundle/nerdtree-tabs"]]
+"let bundles += [["git", "https://github.com/jistr/vim-nerdtree-tabs", "$HOME/.vim/bundle/nerdtree-tabs"]]
 
 let bundles += [["git", "https://github.com/tpope/vim-surround", "$HOME/.vim/bundle/vim-surround"]]
 let bundles += [["git", "https://github.com/spf13/vim-autoclose", "$HOME/.vim/bundle/vim-autoclose"]]

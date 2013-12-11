@@ -105,6 +105,7 @@ if has('cmdline_info')
     set showcmd                 " Show partial commands in status line and
 endif
 
+set switchbuf+=usetab,newtab
 set autoread
 set backspace=indent,eol,start  " Backspace for dummies
 set linespace=0                 " No extra spaces between rows
@@ -412,7 +413,12 @@ let g:snips_author = 'Appache Sioux <appache.sioux@gmail.com>'
 map <F2> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
 map <leader>e :NERDTreeFind<CR>
 nmap <leader>nt :NERDTreeFind<CR>
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+"autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+if (&diff==0)
+    autocmd BufReadPost * tab ball
+endif
 
 let g:NERDShutUp=1
 let NERDTreeShowBookmarks=1
@@ -423,8 +429,6 @@ let NERDTreeMouseMode=2
 let NERDTreeShowHidden=0
 let NERDTreeWinSize=80
 let NERDTreeKeepTreeInNewTab=1
-
-
 " }
 
 " Tabularize {
@@ -457,7 +461,7 @@ endif
 
 " Unite {
 let g:unite_source_history_yank_enable = 1
-let g:unite_enable_start_insert = 0
+let g:unite_enable_start_insert = 1
 let g:unite_update_time = 200
 let g:unite_data_directory='~/.cache/unite'
 let g:unite_source_file_rec_max_cache_files = 0
