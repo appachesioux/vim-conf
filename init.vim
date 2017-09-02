@@ -1,5 +1,14 @@
-scriptencoding utf-8
 set nocompatible " Must be first line
+scriptencoding utf-8
+set encoding=utf8
+
+let install_plugins = 0
+"-------------------------------------------------------------------------------------------------------------------------------
+if !filereadable('~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim')
+  silent !git clone https://github.com/Shougo/dein.vim.git ~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim
+
+  let install_plugins = 1
+endif
 "-------------------------------------------------------------------------------------------------------------------------------
 set runtimepath+=~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim " path to dein.vim
 call dein#begin(expand('~/.config/nvim/plugins')) " plugins' root path
@@ -9,7 +18,6 @@ call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
 call dein#add('NLKNguyen/papercolor-theme')
 call dein#add('ctrlpvim/ctrlp.vim')
 call dein#add('tomtom/tcomment_vim')
-call dein#add('Raimondi/delimitMate')
 call dein#add('neomake/neomake')
 call dein#add('sukima/xmledit')
 call dein#add('evanmiller/nginx-vim-syntax')
@@ -28,9 +36,9 @@ call dein#add('udalov/kotlin-vim', {'on_ft': ['kt']})
 call dein#add('pangloss/vim-javascript', {'on_ft': ['js']})
 call dein#add('elzr/vim-json', {'on_ft': ['json']})
 call dein#add('hdima/python-syntax', {'on_ft': ['py']})
-"call dein#add('itchyny/lightline.vim')
 
 call dein#add('Shougo/deoplete.nvim', {'on_i': 1})
+call dein#add('tweekmonster/deoplete-clang2')
 call dein#add('zchee/deoplete-go', {'build': 'make'})
 call dein#add('fatih/vim-go', {'on_ft': ['go']})
 
@@ -38,12 +46,19 @@ call dein#add('vim-airline/vim-airline')
 call dein#add('vim-airline/vim-airline-themes')
 call dein#add('sbdchd/neoformat')
 
+call dein#add('mhinz/vim-signify')
+call dein#add('jiangmiao/auto-pairs')
+call dein#add('thaerkh/vim-indentguides')
+
 call dein#add('ivalkeen/vim-simpledb')
 
-call dein#add('mhinz/vim-signify')
-call dein#add('tweekmonster/deoplete-clang2')
-
 call dein#end()
+
+if install_plugins
+  echo "Installing Plugins"
+  
+  :call dein#install()
+endif
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => others configs
@@ -55,7 +70,6 @@ source ~/.config/nvim/0-ignore.vim
 "-------------------------------------------------------------------------------------------------------------------------------
 
 syntax on                   " Syntax highlighting
-scriptencoding utf-8
 filetype plugin indent on   " Automatically detect file types.
 
 set background=dark 
@@ -73,8 +87,6 @@ set nowrap         " Do not wrap long lines
 "---------------------------------------------------------------------------
 set autoindent     " Indent at the same level of the previous line
 set shiftwidth=2   " Use indents of 2 spaces
-set expandtab      " Tabs are spaces, not tabs
-set tabstop=2      " An indentation every four columns
 set softtabstop=2  " Let backspace delete indent
 set nojoinspaces   " Prevents inserting two spaces after punctuation on a join (J)
 set numberwidth=2
@@ -82,6 +94,11 @@ set nofoldenable
 set ruler
 set noerrorbells
 set novisualbell
+set smarttab
+set expandtab      " Tabs are spaces, not tabs
+set tabstop=2      " An indentation every four columns
+"set list lcs=tab:\┊\ 
+
 "---------------------------------------------------------------------------
 
 " needed so deoplete can auto select the first suggestion
@@ -98,8 +115,8 @@ let mapleader = "\<space>"
 
 "-------------------------------------------------------------------------------------------------------------------------------
 
-set list 
-set listchars=tab:»-,trail:·,eol:¶,extends:>,precedes:< 
+"set list 
+"set listchars=tab:»-,trail:·,eol:¶,extends:>,precedes:< 
 
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
@@ -118,6 +135,7 @@ let g:neoformat_basic_format_trim = 1
 " => airline
 "--------------------------------------------------------------------------------------------------------------------------------
 let g:airline_powerline_fonts = 1
+
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => deoplete
