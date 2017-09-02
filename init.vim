@@ -199,7 +199,6 @@ let g:ctrlp_clear_cache_on_exit = 0 " 1 - Disable cross-session caching
 let g:ctrlp_show_hidden = 0 " 1 - Enable to scan for dotfiles and dotdirs 
 let g:ctrlp_by_filename = 1 " 0 - To searching by full path
 
-
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => vimfiler
 "--------------------------------------------------------------------------------------------------------------------------------
