@@ -5,7 +5,7 @@
 *.war
 *.ear
 
-9-dein-install
+x-init.vim-config
 lixo/
 plugins/
 

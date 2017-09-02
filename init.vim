@@ -2,15 +2,20 @@ set nocompatible " Must be first line
 scriptencoding utf-8
 set encoding=utf8
 
-let install_plugins = 0
 "-------------------------------------------------------------------------------------------------------------------------------
-if !filereadable('~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim')
+let install_plugins = 0
+if !filereadable(expand('~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim/autoload/dein.vim'))
+  echo "-------------------------------------------------------------------------------------------------------------------------------"
+  echo "Installing dein.vim..."
+  echo "-------------------------------------------------------------------------------------------------------------------------------"
+  echo ""
   silent !git clone https://github.com/Shougo/dein.vim.git ~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim
 
   let install_plugins = 1
 endif
 "-------------------------------------------------------------------------------------------------------------------------------
 set runtimepath+=~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim " path to dein.vim
+
 call dein#begin(expand('~/.config/nvim/plugins')) " plugins' root path
 call dein#add('Shougo/dein.vim')
 call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
@@ -39,8 +44,8 @@ call dein#add('hdima/python-syntax', {'on_ft': ['py']})
 
 call dein#add('Shougo/deoplete.nvim', {'on_i': 1})
 call dein#add('tweekmonster/deoplete-clang2')
-call dein#add('zchee/deoplete-go', {'build': 'make'})
 call dein#add('fatih/vim-go', {'on_ft': ['go']})
+call dein#add('zchee/deoplete-go')
 
 call dein#add('vim-airline/vim-airline')
 call dein#add('vim-airline/vim-airline-themes')
@@ -55,7 +60,9 @@ call dein#add('ivalkeen/vim-simpledb')
 call dein#end()
 
 if install_plugins
+  echo "-------------------------------------------------------------------------------------------------------------------------------"
   echo "Installing Plugins"
+  echo "-------------------------------------------------------------------------------------------------------------------------------"
   
   :call dein#install()
 endif
@@ -135,7 +142,6 @@ let g:neoformat_basic_format_trim = 1
 " => airline
 "--------------------------------------------------------------------------------------------------------------------------------
 let g:airline_powerline_fonts = 1
-
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => deoplete
