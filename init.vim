@@ -1,3 +1,4 @@
+scriptencoding utf-8
 set nocompatible " Must be first line
 "-------------------------------------------------------------------------------------------------------------------------------
 set runtimepath+=~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim " path to dein.vim
@@ -39,6 +40,9 @@ call dein#add('sbdchd/neoformat')
 
 call dein#add('ivalkeen/vim-simpledb')
 
+call dein#add('mhinz/vim-signify')
+call dein#add('tweekmonster/deoplete-clang2')
+
 call dein#end()
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
@@ -66,6 +70,20 @@ set number
 set hidden " Allow buffer switching without saving
 set nowrap         " Do not wrap long lines
 
+"---------------------------------------------------------------------------
+set autoindent     " Indent at the same level of the previous line
+set shiftwidth=2   " Use indents of 2 spaces
+set expandtab      " Tabs are spaces, not tabs
+set tabstop=2      " An indentation every four columns
+set softtabstop=2  " Let backspace delete indent
+set nojoinspaces   " Prevents inserting two spaces after punctuation on a join (J)
+set numberwidth=2
+set nofoldenable
+set ruler
+set noerrorbells
+set novisualbell
+"---------------------------------------------------------------------------
+
 " needed so deoplete can auto select the first suggestion
 set completeopt+=noinsert
 " comment this line to enable autocompletion preview window
@@ -79,6 +97,10 @@ set wildmode=list:longest
 let mapleader = "\<space>"
 
 "-------------------------------------------------------------------------------------------------------------------------------
+
+set list 
+set listchars=tab:»-,trail:·,eol:¶,extends:>,precedes:< 
+
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => Neoformat
@@ -100,7 +122,7 @@ let g:airline_powerline_fonts = 1
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => deoplete
 "--------------------------------------------------------------------------------------------------------------------------------
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => vim-go
@@ -120,7 +142,10 @@ let g:go_metalinter_deadline = "5s"
 let g:go_def_mode = 'godef'
 let g:go_decls_includes = "func,type"
 let g:go_auto_type_info = 1
-
+let g:go_fmt_autosave = 1
+let g:go_def_mode = 'guru'
+let g:go_highlight_operators = 1
+  
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => NeoMake - read and write operations
 "--------------------------------------------------------------------------------------------------------------------------------

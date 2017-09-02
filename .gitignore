@@ -4,3 +4,8 @@
 *.jar
 *.war
 *.ear
+
+9-dein-install
+lixo/
+plugins/
+
