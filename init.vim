@@ -54,6 +54,12 @@ call dein#add('sbdchd/neoformat')
 call dein#add('mhinz/vim-signify')
 call dein#add('jiangmiao/auto-pairs')
 call dein#add('thaerkh/vim-indentguides')
+call dein#add('myusuf3/numbers.vim')
+call dein#add('mileszs/ack.vim')
+call dein#add('tpope/vim-repeat')
+call dein#add('svermeulen/vim-easyclip')
+
+call dein#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 
 call dein#add('ivalkeen/vim-simpledb')
 
@@ -125,17 +131,26 @@ let mapleader = "\<space>"
 "set list 
 "set listchars=tab:»-,trail:·,eol:¶,extends:>,precedes:< 
 
+"---%<---------------------------------------------------------------------------------------------------------------------------
+" => tcomment
+"--------------------------------------------------------------------------------------------------------------------------------
+"call tcomment#DefineType('java', '// %s' )
+"call tcomment#DefineType('java_block', g:tcommentBlockC )
+"call tcomment#DefineType('java_inline', g:tcommentInlineC )
+
+"call tcomment#DefineType('groovy', '// %s' )
+"call tcomment#DefineType('groovy_block', g:tcommentBlockC )
+"call tcomment#DefineType('groovy_inline', g:tcommentInlineC )
+
+"call tcomment#DefineType('kotlin', '// %s' )
+"call tcomment#DefineType('java_block', g:tcommentBlockC )
+"call tcomment#DefineType('java_inline', g:tcommentInlineC )
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => Neoformat
 "--------------------------------------------------------------------------------------------------------------------------------
-" Enable alignment
 let g:neoformat_basic_format_align = 1
-
-" Enable tab to spaces conversion
 let g:neoformat_basic_format_retab = 1
-
-" Enable trimmming of trailing whitespace
 let g:neoformat_basic_format_trim = 1
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
@@ -146,7 +161,7 @@ let g:airline_powerline_fonts = 1
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => deoplete
 "--------------------------------------------------------------------------------------------------------------------------------
-let g:deoplete#enable_at_startup = 0
+let g:deoplete#enable_at_startup = 1
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => vim-go
@@ -183,6 +198,8 @@ let g:neomake_open_list = 2
 "--------------------------------------------------------------------------------------------------------------------------------
 set grepprg=ag\ --nogroup\ --nocolor\ --column
 set grepformat=%f:%l:%c%m
+
+let g:ackprg = 'ag --vimgrep'
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => ctrlp -> f5 - clear cache :f7 - clear mru
