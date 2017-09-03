@@ -2,8 +2,8 @@ scriptencoding utf-8
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => key mappings
 "--------------------------------------------------------------------------------------------------------------------------------
-"nmap <F2> :set relativenumber!<cr>
-nnoremap <F2> :NumbersToggle<cr>
+nmap <F2> :set relativenumber!<cr>
+"nnoremap <F2> :NumbersToggle<cr>
 nmap <F3> :set wrap!<cr>
 nmap <F9> :checktime<cr>
 noremap <C-A-l> :Neoformat<cr>

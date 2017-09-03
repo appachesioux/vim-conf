@@ -6,7 +6,7 @@ set encoding=utf8
 let install_plugins = 0
 if !filereadable(expand('~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim/autoload/dein.vim'))
   echo "-------------------------------------------------------------------------------------------------------------------------------"
-  echo "Installing dein.vim..."
+  echo "Installing dein.vim"
   echo "-------------------------------------------------------------------------------------------------------------------------------"
   echo ""
   silent !git clone https://github.com/Shougo/dein.vim.git ~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim
@@ -33,19 +33,21 @@ call dein#add('Shirk/vim-gas')
 call dein#add('vim-scripts/mips.vim')
 call dein#add('mattn/emmet-vim')
 call dein#add('brooth/far.vim')
-call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/denite.nvim')
 call dein#add('Shougo/vimfiler.vim')
 call dein#add('justmao945/vim-clang', {'on_ft': ['c', 'cpp']})
 call dein#add('udalov/kotlin-vim', {'on_ft': ['kt']})
-call dein#add('pangloss/vim-javascript', {'on_ft': ['js']})
-call dein#add('elzr/vim-json', {'on_ft': ['json']})
 call dein#add('hdima/python-syntax', {'on_ft': ['py']})
+
+call dein#add('pangloss/vim-javascript', {'on_ft': ['js']})
+call dein#add('mxw/vim-jsx')
+call dein#add('elzr/vim-json', {'on_ft': ['json']})
+call dein#add('Shougo/unite.vim')
 
 call dein#add('Shougo/deoplete.nvim', {'on_i': 1})
 call dein#add('tweekmonster/deoplete-clang2')
 call dein#add('fatih/vim-go', {'on_ft': ['go']})
-call dein#add('zchee/deoplete-go')
+"call dein#add('zchee/deoplete-go')
 
 call dein#add('vim-airline/vim-airline')
 call dein#add('vim-airline/vim-airline-themes')
@@ -54,14 +56,15 @@ call dein#add('sbdchd/neoformat')
 call dein#add('mhinz/vim-signify')
 call dein#add('jiangmiao/auto-pairs')
 call dein#add('thaerkh/vim-indentguides')
-call dein#add('myusuf3/numbers.vim')
+"call dein#add('myusuf3/numbers.vim')
 call dein#add('mileszs/ack.vim')
 call dein#add('tpope/vim-repeat')
 call dein#add('svermeulen/vim-easyclip')
+call dein#add('airblade/vim-rooter')
 
-call dein#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
+"call dein#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 
-call dein#add('ivalkeen/vim-simpledb')
+"call dein#add('ivalkeen/vim-simpledb')
 
 call dein#end()
 
