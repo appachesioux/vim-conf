@@ -2,25 +2,38 @@ set nocompatible " Must be first line
 scriptencoding utf-8
 set encoding=utf8
 
+filetype plugin indent on   " Automatically detect file types.
+syntax on                   " Syntax highlighting
+
 "-------------------------------------------------------------------------------------------------------------------------------
-let install_plugins = 0
-if !filereadable(expand('~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim/autoload/dein.vim'))
+if !filereadable(expand('~/.config/nvim/repos/github.com/Shougo/dein.vim/autoload/dein.vim'))
   echo "-------------------------------------------------------------------------------------------------------------------------------"
   echo "Installing dein.vim"
   echo "-------------------------------------------------------------------------------------------------------------------------------"
   echo ""
-  silent !git clone https://github.com/Shougo/dein.vim.git ~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim
-
-  let install_plugins = 1
+  silent !git clone https://github.com/Shougo/dein.vim.git ~/.config/nvim/repos/github.com/Shougo/dein.vim
 endif
 "-------------------------------------------------------------------------------------------------------------------------------
-set runtimepath+=~/.config/nvim/plugins/repos/github.com/Shougo/dein.vim " path to dein.vim
+" Required:
+set runtimepath+=~/.config/nvim/repos/github.com/Shougo/dein.vim
 
-call dein#begin(expand('~/.config/nvim/plugins')) " plugins' root path
-call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
-    
-call dein#add('NLKNguyen/papercolor-theme')
+" Required:
+call dein#begin('~/.config/nvim')
+
+" Let dein manage dein
+" Required:
+call dein#add('~/.config/nvim/repos/github.com/Shougo/dein.vim')
+
+call dein#add('Shougo/vimproc.vim', {'build' : 'make'})  
+call dein#add('Shougo/vimshell')
+call dein#add('Shougo/echodoc.vim')
+call dein#add('Shougo/deoplete.nvim')
+call dein#add('Shougo/neocomplete.vim')
+call dein#add('Shougo/neosnippet.vim')
+call dein#add('Shougo/neosnippet-snippets')
+call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/denite.nvim')
+call dein#add('Shougo/vimfiler.vim') 
 call dein#add('ctrlpvim/ctrlp.vim')
 call dein#add('tomtom/tcomment_vim')
 call dein#add('neomake/neomake')
@@ -33,48 +46,43 @@ call dein#add('Shirk/vim-gas')
 call dein#add('vim-scripts/mips.vim')
 call dein#add('mattn/emmet-vim')
 call dein#add('brooth/far.vim')
-call dein#add('Shougo/denite.nvim')
-call dein#add('Shougo/vimfiler.vim')
 call dein#add('justmao945/vim-clang', {'on_ft': ['c', 'cpp']})
 call dein#add('udalov/kotlin-vim', {'on_ft': ['kt']})
 call dein#add('hdima/python-syntax', {'on_ft': ['py']})
-
-call dein#add('pangloss/vim-javascript', {'on_ft': ['js']})
+call dein#add('pangloss/vim-javascript', {'on_ft': ['js']}) 
 call dein#add('mxw/vim-jsx')
 call dein#add('elzr/vim-json', {'on_ft': ['json']})
-call dein#add('Shougo/unite.vim')
-
-call dein#add('Shougo/deoplete.nvim', {'on_i': 1})
 call dein#add('tweekmonster/deoplete-clang2')
-call dein#add('fatih/vim-go', {'on_ft': ['go']})
-"call dein#add('zchee/deoplete-go')
-
+call dein#add('fatih/vim-go')
+call dein#add('zchee/deoplete-go')
 call dein#add('vim-airline/vim-airline')
 call dein#add('vim-airline/vim-airline-themes')
 call dein#add('sbdchd/neoformat')
-
 call dein#add('mhinz/vim-signify')
 call dein#add('jiangmiao/auto-pairs')
 call dein#add('thaerkh/vim-indentguides')
-"call dein#add('myusuf3/numbers.vim')
-call dein#add('mileszs/ack.vim')
+"call dein#add('mileszs/ack.vim')
 call dein#add('tpope/vim-repeat')
-call dein#add('svermeulen/vim-easyclip')
+call dein#add('tpope/vim-dispatch')
 call dein#add('airblade/vim-rooter')
-
-"call dein#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
-
+"call dein#add('Raimondi/delimitMate')
 "call dein#add('ivalkeen/vim-simpledb')
+call dein#add('terryma/vim-multiple-cursors')
 
+call dein#add('morhetz/gruvbox')
+call dein#add('NLKNguyen/papercolor-theme')
+
+" Required:
 call dein#end()
 
-if install_plugins
+if dein#check_install()
   echo "-------------------------------------------------------------------------------------------------------------------------------"
   echo "Installing Plugins"
   echo "-------------------------------------------------------------------------------------------------------------------------------"
-  
+
   :call dein#install()
 endif
+
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => others configs
@@ -84,9 +92,6 @@ source ~/.config/nvim/0-commands.vim
 source ~/.config/nvim/0-mappings.vim
 source ~/.config/nvim/0-ignore.vim
 "-------------------------------------------------------------------------------------------------------------------------------
-
-syntax on                   " Syntax highlighting
-filetype plugin indent on   " Automatically detect file types.
 
 set background=dark 
 colorscheme PaperColor
@@ -133,6 +138,10 @@ let mapleader = "\<space>"
 
 "set list 
 "set listchars=tab:»-,trail:·,eol:¶,extends:>,precedes:< 
+set t_Co=256
+
+let g:indentLine_char = '│'
+let g:indentLine_color_term = 000
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => tcomment

@@ -3,10 +3,9 @@ scriptencoding utf-8
 " => key mappings
 "--------------------------------------------------------------------------------------------------------------------------------
 nmap <F2> :set relativenumber!<cr>
-"nnoremap <F2> :NumbersToggle<cr>
 nmap <F3> :set wrap!<cr>
 nmap <F9> :checktime<cr>
-noremap <C-A-l> :Neoformat<cr>
+noremap <c-A-l> :Neoformat<cr>
 
 nmap <c-b> :CtrlPBuffer<cr>
 nmap <c-m> :CtrlPMRU<cr>
@@ -18,8 +17,9 @@ vnoremap <c-/> :TComment<cr>
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => deoplete 
 "--------------------------------------------------------------------------------------------------------------------------------
-"inoremap <C-Space> <c-x><c-o>
-"inoremap <C-@> <c-x><c-o>
+"inoremap <c-Space> <c-x><c-o>
+"inoremap <c-@> <c-x><c-o>
+inoremap <c-Space> <c-N>
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => system clipboard
@@ -32,7 +32,10 @@ imap <c-v> <ESC>"+pa
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => search / replace
 "--------------------------------------------------------------------------------------------------------------------------------
-vnoremap <C-r> "hy:%s/<C-r>h/<C-r>h/gcI<left><left><left>
+vnoremap <s-r> "hy:%s/<c-r>h/<c-r>h/gcI<left><left><left><left>
+noremap <c-r> "hy:%s/<c-r><c-w>/<c-r><c-w>/gcI<left><left><left><left>
+vnoremap <s-f> "hy:vimgrep /<c-r>h/gj **/*<left><left><left><left><left><left><left><left>
+noremap <c-f> "hy:vimgrep /<c-r><c-w>/gj **/*<left><left><left><left><left><left><left><left>
 
 
 "---%<---------------------------------------------------------------------------------------------------------------------------

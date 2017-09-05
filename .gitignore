@@ -6,6 +6,6 @@
 *.ear
 
 x-init.vim-config
-lixo/
-plugins/
-
+lixo
+repos
+.cache
