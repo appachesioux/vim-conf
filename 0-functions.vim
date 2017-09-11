@@ -2,20 +2,6 @@ scriptencoding utf-8
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => functions
 "--------------------------------------------------------------------------------------------------------------------------------
-"function! FormatCode()
-"  let winview=winsaveview()
-"
-"  if index(['j-ava','g-roovy','c-pp','c-'], &filetype) > -1 
-    " :% !uncrustify -c ~/conf/vim/uncrustify.spock --no-backup 2>/dev/null
-    " :%JavaFormat
-    " elseif  &filetype == "go"
-    "   :GoFmt   
-"  else
-"    exe "normal gg=G"   
- " endif
-"
-"  call winrestview(winview)
-"endfunction
 
 " Restore cursor to file position in previous editing session
 function! ResCur()
@@ -31,3 +17,53 @@ augroup resCur
 augroup END
 
 
+"---%<---------------------------------------------------------------------------------------------------------------------------
+" => ToggleComment
+"--------------------------------------------------------------------------------------------------------------------------------
+let s:comment_map = { 
+    \   "vim": '"',
+    \   "c": '\/\/',
+    \   "cpp": '\/\/',
+    \   "go": '\/\/',
+    \   "java": '\/\/',
+    \   "javascript": '\/\/',
+    \   "lua": '--',
+    \   "scala": '\/\/',
+    \   "php": '\/\/',
+    \   "python": '#',
+    \   "ruby": '#',
+    \   "rust": '\/\/',
+    \   "sh": '#',
+    \   "desktop": '#',
+    \   "fstab": '#',
+    \   "conf": '#',
+    \   "profile": '#',
+    \   "bashrc": '#',
+    \   "bash_profile": '#',
+    \   "mail": '>',
+    \   "eml": '>',
+    \   "bat": 'REM',
+    \   "ahk": ';',
+    \   "tex": '%',
+    \   "sql": '--',
+    \ }
+
+function! ToggleComment()
+    if has_key(s:comment_map, &filetype)
+        let comment_leader = s:comment_map[&filetype]
+        if getline('.') =~ "^\\s*" . comment_leader . " " 
+            " Uncomment the line
+            execute "silent s/^\\(\\s*\\)" . comment_leader . " /\\1/"
+        else 
+            if getline('.') =~ "^\\s*" . comment_leader
+                " Uncomment the line
+                execute "silent s/^\\(\\s*\\)" . comment_leader . "/\\1/"
+            else
+                " Comment the line
+                execute "silent s/^\\(\\s*\\)/\\1" . comment_leader . " /"
+            end
+        end
+    else
+        echo "No comment leader found for filetype"
+    end
+endfunction

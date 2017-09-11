@@ -35,7 +35,6 @@ call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/denite.nvim')
 call dein#add('Shougo/vimfiler.vim') 
 call dein#add('ctrlpvim/ctrlp.vim')
-call dein#add('tomtom/tcomment_vim')
 call dein#add('neomake/neomake')
 call dein#add('sukima/xmledit')
 call dein#add('evanmiller/nginx-vim-syntax')
@@ -61,16 +60,14 @@ call dein#add('sbdchd/neoformat')
 call dein#add('mhinz/vim-signify')
 call dein#add('jiangmiao/auto-pairs')
 call dein#add('thaerkh/vim-indentguides')
-"call dein#add('mileszs/ack.vim')
 call dein#add('tpope/vim-repeat')
 call dein#add('tpope/vim-dispatch')
 call dein#add('airblade/vim-rooter')
-"call dein#add('Raimondi/delimitMate')
-"call dein#add('ivalkeen/vim-simpledb')
-call dein#add('terryma/vim-multiple-cursors')
-
+call dein#add('yssl/QFEnter')
 call dein#add('morhetz/gruvbox')
 call dein#add('NLKNguyen/papercolor-theme')
+"call dein#add('ivalkeen/vim-simpledb')
+"call dein#add('terryma/vim-multiple-cursors')
 
 " Required:
 call dein#end()
@@ -88,7 +85,7 @@ endif
 " => others configs
 "--------------------------------------------------------------------------------------------------------------------------------
 source ~/.config/nvim/0-functions.vim
-source ~/.config/nvim/0-commands.vim
+"source ~/.config/nvim/0-commands.vim
 source ~/.config/nvim/0-mappings.vim
 source ~/.config/nvim/0-ignore.vim
 "-------------------------------------------------------------------------------------------------------------------------------
@@ -140,23 +137,36 @@ let mapleader = "\<space>"
 "set listchars=tab:»-,trail:·,eol:¶,extends:>,precedes:< 
 set t_Co=256
 
+"---%<---------------------------------------------------------------------------------------------------------------------------
+" => commands
+"--------------------------------------------------------------------------------------------------------------------------------
+
+autocmd FileType vimfiler nmap <silent> <buffer> <Esc> :bd<cr>
+autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+autocmd! BufWritePost * Neomake
+
+autocmd BufNewFile,BufRead *.go set filetype=go 
+autocmd BufNewFile,BufRead *.java set filetype=java 
+autocmd BufNewFile,BufRead *.gradle set filetype=groovy
+autocmd BufNewFile,BufRead *.ddl set filetype=sql
+autocmd BufNewFile,BufRead *.vim setfiletype vim
+
+
+"---%<---------------------------------------------------------------------------------------------------------------------------
+" => indentLine
+"--------------------------------------------------------------------------------------------------------------------------------
 let g:indentLine_char = '│'
 let g:indentLine_color_term = 000
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
-" => tcomment
+" => qfenter
 "--------------------------------------------------------------------------------------------------------------------------------
-"call tcomment#DefineType('java', '// %s' )
-"call tcomment#DefineType('java_block', g:tcommentBlockC )
-"call tcomment#DefineType('java_inline', g:tcommentInlineC )
+let g:qfenter_enable_autoquickfix=1
 
-"call tcomment#DefineType('groovy', '// %s' )
-"call tcomment#DefineType('groovy_block', g:tcommentBlockC )
-"call tcomment#DefineType('groovy_inline', g:tcommentInlineC )
-
-"call tcomment#DefineType('kotlin', '// %s' )
-"call tcomment#DefineType('java_block', g:tcommentBlockC )
-"call tcomment#DefineType('java_inline', g:tcommentInlineC )
+let g:qfenter_keymap = {}
+let g:qfenter_keymap.vopen = ['<C-v>']
+let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
+let g:qfenter_keymap.topen = ['<C-t>']      
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => Neoformat
@@ -208,9 +218,9 @@ let g:neomake_open_list = 2
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => ag / grep
 "--------------------------------------------------------------------------------------------------------------------------------
+" Use ag over grep
 set grepprg=ag\ --nogroup\ --nocolor\ --column
 set grepformat=%f:%l:%c%m
-
 let g:ackprg = 'ag --vimgrep'
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
@@ -221,12 +231,14 @@ let g:ctrlp_open_multiple_files = '1vjr'
 let g:ctrlp_mruf_max = 20
 let g:ctrlp_mruf_relative = 1
 let g:ctrlp_working_path_mode = ''
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 let g:ctrlp_reuse_window = 'netrw\|help\|quickfix'
-let g:ctrlp_use_caching = 1 " 0 - Disable caching
 let g:ctrlp_clear_cache_on_exit = 0 " 1 - Disable cross-session caching
 let g:ctrlp_show_hidden = 0 " 1 - Enable to scan for dotfiles and dotdirs 
 let g:ctrlp_by_filename = 1 " 0 - To searching by full path
+
+let g:ctrlp_use_caching = 0 " 0 - Disable caching 1 - Enable caching
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+"let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => vimfiler

@@ -11,8 +11,9 @@ nmap <c-b> :CtrlPBuffer<cr>
 nmap <c-m> :CtrlPMRU<cr>
 
 nmap <c-\> :VimFiler<cr>
-nnoremap <c-/> :TComment<cr>
-vnoremap <c-/> :TComment<cr>
+
+nnoremap <c-_> :call ToggleComment()<cr>
+vnoremap <c-_> :call ToggleComment()<cr>
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => deoplete 
@@ -37,6 +38,8 @@ noremap <c-r> "hy:%s/<c-r><c-w>/<c-r><c-w>/gcI<left><left><left><left>
 vnoremap <s-f> "hy:vimgrep /<c-r>h/gj **/*<left><left><left><left><left><left><left><left>
 noremap <c-f> "hy:vimgrep /<c-r><c-w>/gj **/*<left><left><left><left><left><left><left><left>
 
+noremap <c-s> :let @"=expand("%:P")<cr>"hy:save <c-r>"
+
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => ctrlp 
@@ -47,4 +50,5 @@ let g:ctrlp_prompt_mappings = {
       \ 'MarkToOpen()':['<c-space>'],
       \ 'OpenMulti()' :['<c-enter>'],
       \ }
+      
 

@@ -18,5 +18,5 @@ autocmd BufNewFile,BufRead *.go set filetype=go
 autocmd BufNewFile,BufRead *.java set filetype=java 
 autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 autocmd BufNewFile,BufRead *.ddl set filetype=sql
-
+autocmd BufNewFile,BufRead *.vim set filetype=vim
 
