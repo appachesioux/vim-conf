@@ -27,13 +27,20 @@ call dein#add('~/.config/nvim/repos/github.com/Shougo/dein.vim')
 call dein#add('Shougo/vimproc.vim', {'build' : 'make'})  
 call dein#add('Shougo/vimshell')
 call dein#add('Shougo/echodoc.vim')
-call dein#add('Shougo/deoplete.nvim')
-call dein#add('Shougo/neocomplete.vim')
 call dein#add('Shougo/neosnippet.vim')
 call dein#add('Shougo/neosnippet-snippets')
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/denite.nvim')
 call dein#add('Shougo/vimfiler.vim') 
+call dein#add('Shougo/deoplete.nvim')
+call dein#add('tweekmonster/deoplete-clang2')
+call dein#add('zchee/deoplete-go')
+
+call dein#add('sebastianmarkow/deoplete-rust')
+call dein#add('phildawes/racer')
+
+call dein#add('artur-shaik/vim-javacomplete2')
+
 call dein#add('ctrlpvim/ctrlp.vim')
 call dein#add('neomake/neomake')
 call dein#add('sukima/xmledit')
@@ -44,30 +51,28 @@ call dein#add('plasticboy/vim-markdown')
 call dein#add('Shirk/vim-gas')
 call dein#add('vim-scripts/mips.vim')
 call dein#add('mattn/emmet-vim')
-call dein#add('brooth/far.vim')
 call dein#add('justmao945/vim-clang', {'on_ft': ['c', 'cpp']})
 call dein#add('udalov/kotlin-vim', {'on_ft': ['kt']})
 call dein#add('hdima/python-syntax', {'on_ft': ['py']})
 call dein#add('pangloss/vim-javascript', {'on_ft': ['js']}) 
 call dein#add('mxw/vim-jsx')
 call dein#add('elzr/vim-json', {'on_ft': ['json']})
-call dein#add('tweekmonster/deoplete-clang2')
 call dein#add('fatih/vim-go')
-call dein#add('zchee/deoplete-go')
 call dein#add('vim-airline/vim-airline')
 call dein#add('vim-airline/vim-airline-themes')
 call dein#add('sbdchd/neoformat')
-call dein#add('mhinz/vim-signify')
+" call dein#add('mhinz/vim-signify')
 call dein#add('jiangmiao/auto-pairs')
 call dein#add('thaerkh/vim-indentguides')
 call dein#add('tpope/vim-repeat')
 call dein#add('tpope/vim-dispatch')
 call dein#add('airblade/vim-rooter')
-call dein#add('yssl/QFEnter')
 call dein#add('morhetz/gruvbox')
 call dein#add('NLKNguyen/papercolor-theme')
-"call dein#add('ivalkeen/vim-simpledb')
 "call dein#add('terryma/vim-multiple-cursors')
+" call dein#add('yssl/QFEnter')
+" call dein#add('brooth/far.vim')
+"call dein#add('ivalkeen/vim-simpledb')
 
 " Required:
 call dein#end()
@@ -85,7 +90,6 @@ endif
 " => others configs
 "--------------------------------------------------------------------------------------------------------------------------------
 source ~/.config/nvim/0-functions.vim
-"source ~/.config/nvim/0-commands.vim
 source ~/.config/nvim/0-mappings.vim
 source ~/.config/nvim/0-ignore.vim
 "-------------------------------------------------------------------------------------------------------------------------------
@@ -108,10 +112,10 @@ set shiftwidth=2   " Use indents of 2 spaces
 set softtabstop=2  " Let backspace delete indent
 set nojoinspaces   " Prevents inserting two spaces after punctuation on a join (J)
 set numberwidth=2
-set nofoldenable
+" set nofoldenable
 set ruler
-set noerrorbells
-set novisualbell
+" set noerrorbells
+" set novisualbell
 set smarttab
 set expandtab      " Tabs are spaces, not tabs
 set tabstop=2      " An indentation every four columns
@@ -151,12 +155,46 @@ autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 autocmd BufNewFile,BufRead *.ddl set filetype=sql
 autocmd BufNewFile,BufRead *.vim setfiletype vim
 
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
-" => indentLine
+" => vimfiler
 "--------------------------------------------------------------------------------------------------------------------------------
-let g:indentLine_char = '│'
-let g:indentLine_color_term = 000
+let g:vimfiler_as_default_explorer = 1
+
+"---%<---------------------------------------------------------------------------------------------------------------------------
+" => indentguides
+"--------------------------------------------------------------------------------------------------------------------------------
+let g:indentguides_spacechar = '┆'
+let g:indentguides_tabchar = '|'
+
+" let g:indentLine_enabled = 1
+" let g:indentLine_char = '│'
+" let g:indentLine_setColors = 0
+
+" let g:indentLine_color_term = 000
+" let g:indentLine_color_term = 239
+
+" Vim
+" let g:indentLine_color_term = 239
+
+" GVim
+" let g:indentLine_color_gui = '#A4E57E'
+
+" none X terminal
+" let g:indentLine_color_tty_light = 7 " (default: 4)
+" let g:indentLine_color_dark = 1 " (default: 2)
+
+" Background (Vim, GVim)
+" let g:indentLine_bgcolor_term = 202
+" let g:indentLine_bgcolor_gui = '#FF5F00'
+
+" let g:indent_guides_enable_on_vim_startup = 1
+" let g:indent_guides_auto_colors = 0
+" let g:indent_guides_guide_size = 1
+" let g:indent_guides_start_level = 2
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => qfenter
@@ -184,6 +222,15 @@ let g:airline_powerline_fonts = 1
 " => deoplete
 "--------------------------------------------------------------------------------------------------------------------------------
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+
+"---%<---------------------------------------------------------------------------------------------------------------------------
+" => racer
+"--------------------------------------------------------------------------------------------------------------------------------
+let g:racer_cmd = "/usr/bin/racer"
+let $RUST_SRC_PATH = "/usr/src/rust/src/"
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.rust = '[(\.)(::)]'
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => vim-go
@@ -219,29 +266,30 @@ let g:neomake_open_list = 2
 " => ag / grep
 "--------------------------------------------------------------------------------------------------------------------------------
 " Use ag over grep
-set grepprg=ag\ --nogroup\ --nocolor\ --column
 set grepformat=%f:%l:%c%m
-let g:ackprg = 'ag --vimgrep'
+" set grepprg=ag\ --nogroup\ --nocolor\ --column
+set grepprg=rg\ --color=never
+
+" let g:ackprg = 'ag --vimgrep'
+
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => ctrlp -> f5 - clear cache :f7 - clear mru
 "--------------------------------------------------------------------------------------------------------------------------------
-let g:ctrlp_match_window = 'top,order:ttb,min:100,max:100,results:50'
-let g:ctrlp_open_multiple_files = '1vjr'
-let g:ctrlp_mruf_max = 20
+let g:ctrlp_mruf_default_order=1
+let g:ctrlp_mruf_max = 30
 let g:ctrlp_mruf_relative = 1
-let g:ctrlp_working_path_mode = ''
+let g:ctrlp_mruf_exclude = '.*/tmp/.*\|.*/.git/.*'
+let g:ctrlp_open_multiple_files = '1vjr'
 let g:ctrlp_reuse_window = 'netrw\|help\|quickfix'
-let g:ctrlp_clear_cache_on_exit = 0 " 1 - Disable cross-session caching
+let g:ctrlp_clear_cache_on_exit = 1 " 0 - Enable cross-session caching 1 - Disable cross-session caching
 let g:ctrlp_show_hidden = 0 " 1 - Enable to scan for dotfiles and dotdirs 
 let g:ctrlp_by_filename = 1 " 0 - To searching by full path
-
 let g:ctrlp_use_caching = 0 " 0 - Disable caching 1 - Enable caching
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-"let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-
-"---%<---------------------------------------------------------------------------------------------------------------------------
-" => vimfiler
-"--------------------------------------------------------------------------------------------------------------------------------
-let g:vimfiler_as_default_explorer = 1
+"let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+" let g:ctrlp_root_markers = ['build.gradle','pom.xml', '.p4ignore','.git']
+let g:ctrlp_working_path_mode = 'w'
+" let g:ctrlp_match_window = 'top,order:ttb,min:100,max:100'
+  let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20'
 

@@ -12,8 +12,8 @@ nmap <c-m> :CtrlPMRU<cr>
 
 nmap <c-\> :VimFiler<cr>
 
-nnoremap <c-_> :call ToggleComment()<cr>
-vnoremap <c-_> :call ToggleComment()<cr>
+nnoremap <c-_> :call DoComment()<cr>
+vnoremap <c-_> :call DoComment()<cr>
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => deoplete 
@@ -35,8 +35,13 @@ imap <c-v> <ESC>"+pa
 "--------------------------------------------------------------------------------------------------------------------------------
 vnoremap <s-r> "hy:%s/<c-r>h/<c-r>h/gcI<left><left><left><left>
 noremap <c-r> "hy:%s/<c-r><c-w>/<c-r><c-w>/gcI<left><left><left><left>
-vnoremap <s-f> "hy:vimgrep /<c-r>h/gj **/*<left><left><left><left><left><left><left><left>
-noremap <c-f> "hy:vimgrep /<c-r><c-w>/gj **/*<left><left><left><left><left><left><left><left>
+
+" vnoremap <s-f> "hy:vimgrep /<c-r>h/gj **/*<left><left><left><left><left><left><left><left>
+" noremap <c-f> "hy:vimgrep /<c-r><c-w>/gj **/*<left><left><left><left><left><left><left><left>
+
+vnoremap <s-f> "hy:vimgrep /<c-r>h/ **/*<left><left><left><left><left><left><left><left>
+noremap <c-f> "hy:vimgrep /<c-r><c-w>/ **/*<left><left><left><left><left><left><left><left>
+
 
 noremap <c-s> :let @"=expand("%:P")<cr>"hy:save <c-r>"
 
