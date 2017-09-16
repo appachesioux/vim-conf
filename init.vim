@@ -133,8 +133,6 @@ set completeopt-=preview
 " (complete only the common part, list the options that match)
 set wildmode=list:longest
 
-let mapleader = "\<space>"
-
 "-------------------------------------------------------------------------------------------------------------------------------
 
 "set list 
@@ -154,6 +152,7 @@ autocmd BufNewFile,BufRead *.java set filetype=java
 autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 autocmd BufNewFile,BufRead *.ddl set filetype=sql
 autocmd BufNewFile,BufRead *.vim setfiletype vim
+autocmd BufNewFile,BufRead *.properties setfiletype properties
 
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
@@ -167,34 +166,6 @@ let g:vimfiler_as_default_explorer = 1
 "--------------------------------------------------------------------------------------------------------------------------------
 let g:indentguides_spacechar = '┆'
 let g:indentguides_tabchar = '|'
-
-" let g:indentLine_enabled = 1
-" let g:indentLine_char = '│'
-" let g:indentLine_setColors = 0
-
-" let g:indentLine_color_term = 000
-" let g:indentLine_color_term = 239
-
-" Vim
-" let g:indentLine_color_term = 239
-
-" GVim
-" let g:indentLine_color_gui = '#A4E57E'
-
-" none X terminal
-" let g:indentLine_color_tty_light = 7 " (default: 4)
-" let g:indentLine_color_dark = 1 " (default: 2)
-
-" Background (Vim, GVim)
-" let g:indentLine_bgcolor_term = 202
-" let g:indentLine_bgcolor_gui = '#FF5F00'
-
-" let g:indent_guides_enable_on_vim_startup = 1
-" let g:indent_guides_auto_colors = 0
-" let g:indent_guides_guide_size = 1
-" let g:indent_guides_start_level = 2
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => qfenter
@@ -291,5 +262,5 @@ let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
 " let g:ctrlp_root_markers = ['build.gradle','pom.xml', '.p4ignore','.git']
 let g:ctrlp_working_path_mode = 'w'
 " let g:ctrlp_match_window = 'top,order:ttb,min:100,max:100'
-  let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20'
+let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:20'
 

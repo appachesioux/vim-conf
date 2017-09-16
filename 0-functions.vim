@@ -43,6 +43,7 @@ function! DoComment()
       \   "rust": '\/\/',
       \   "scala": '\/\/',
       \   "sh": '#',
+      \   "properties": '#',
       \   "smb": ';',
       \   "sql": '--',
       \   "tex": '%',

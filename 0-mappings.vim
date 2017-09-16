@@ -2,8 +2,11 @@ scriptencoding utf-8
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => key mappings
 "--------------------------------------------------------------------------------------------------------------------------------
+let mapleader = "\<space>"
+
 nmap <F2> :set relativenumber!<cr>
 nmap <F3> :set wrap!<cr>
+nmap <F4> :set hlsearch!<cr>
 nmap <F9> :checktime<cr>
 noremap <c-A-l> :Neoformat<cr>
 
@@ -11,6 +14,9 @@ nmap <c-b> :CtrlPBuffer<cr>
 nmap <c-m> :CtrlPMRU<cr>
 
 nmap <c-\> :VimFiler<cr>
+
+nnoremap <leader>w :w !sudo tee % >/dev/null
+nnoremap <leader>d :bdelete<cr>
 
 nnoremap <c-_> :call DoComment()<cr>
 vnoremap <c-_> :call DoComment()<cr>
@@ -29,6 +35,9 @@ vmap <c-c> "+yi
 vmap <c-x> "+c
 vmap <c-v> c<ESC>"+p
 imap <c-v> <ESC>"+pa
+
+noremap <Leader>p "0p
+vnoremap <Leader>p "0p
 
 "---%<---------------------------------------------------------------------------------------------------------------------------
 " => search / replace
