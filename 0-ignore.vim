@@ -22,7 +22,6 @@ set wildignore+=.idea,.gradle,*/build/**,*/bin/** " Project
 " => ctrlp 
 "--------------------------------------------------------------------------------------------------------------------------------
 let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-      \ 'file': '\.png$\|\.gif$\|\.jpg$|\.pdf$|\.rar$|\.zip$|\.exe$',
-      \ }
-
+	\   'dir' : '\.git$|\.hg$\|\.svn$\|build$\|bower_components\|node_modules\|dist\|target',
+	\ 	'file' : '\v\.(exe|dll|lib|gif|jpg|png|rar|zip|)$'
+	\ }
