@@ -70,54 +70,32 @@ function! DuplFind()
   :g/^\(.*\)$\n\1$/p
 endfunction
 
-
-function! ToggleNetrw()
-  let i = bufnr("$")
-  let wasOpen = 0
-  while (i >= 1)
-    if (getbufvar(i, "&filetype") == "netrw")
-      silent exe "bwipeout " . i
-      let wasOpen = 1
-    endif
-    let i-=1
-  endwhile
-  if !wasOpen
-    silent Lexplore
-    silent Rex
-    " silent Explore
-  endif
-
-  nmap <buffer> <esc> :bw<cr>
-endfunction
-
-
 fun! ExploreOpen()
-  let g:last_bufnr = bufnr('%')
-  exe "Explore "
+  " let g:last_bufnr = bufnr('%')
   " exe "Lexplore "
+  " exe 'Explore' getcwd()
+  
+  let g:netrw_keepdir = 0
+  execute '!cd ' . getcwd()
+  :Explore 
+  " :edit .
+
+
   let g:netrw_browse_split=0  " open files in current window
 
-  nmap <buffer> <esc> :bw<cr>
+  nmap <buffer> <esc> :bd<cr>
 endf
 
-fun! ExClose()
-  if &filetype == "netrw"
-    exe ':b' . g:last_bufnr
-  endif
+fun! ConfCoc()
+   CocInstall coc-sql
+   CocInstall coc-java
+   CocInstall coc-flutter
+   CocInstall coc-rls
+   CocInstall coc-tsserver
+   CocInstall coc-json
+   CocInstall coc-html
+   CocInstall coc-css
+   CocInstall coc-python
+   CocInstall coc-xml
 endf
-
-function! DeleteHiddenBuffers()
-  let tpbl=[]
-  let closed = 0
-  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
-  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
-    if getbufvar(buf, '&mod') == 0
-      silent execute 'bwipeout' buf
-      let closed += 1
-    endif
-  endfor
-  echo "Closed ".closed." hidden buffers"
-endfunction
-
-
 
